@@ -1,0 +1,26 @@
+<span class="graytitle">材料から検索</span>
+<form action="/icookpad/search" method="get" >
+<ul class="pageitem">
+  <li class="form"><input name="word" placeholder="必須" type="text" /></li>
+  <li class="form"><input name="search" type="submit" value="検索" /></li>
+</ul>
+</form>
+<span class="graytitle">旬のキーワード</span>
+<ul class="pageitem"> 
+  <% @keywords.each_with_index do |link, i| %>
+  <li class="form"><input name="kw<%= i %>" type="button" value="<%= link.content %>" onclick="window.location = '/icookpad/search/<%= link['href'].gsub(/.+\/([^\/]+$)/, "\\1") %>'; return false;"/></li>
+  <% end %>
+</ul>
+<span class="graytitle">話題のレシピ</span>
+<ul class="pageitem"> 
+  <% @wadai_recipe.each_with_index do |link, i| %>
+  <li class="menu">
+    <input name="wr<%= i %>" type="button" value="<%= link.content %>" onclick="window.location = '/icookpad/recipe/<%= link['href'].gsub(/.*\/([^\/]+$)/, "\\1") %>'; return false;"/>
+  </li>
+  <% end %>
+  <li class="menu"><a href="/icookpad/recipe/hot"><span class="name">話題のレシピバックナンバー</span><span class="arrow"></span></a></li>
+</ul>
+
+<ul class="pageitem"> 
+  <li class="form"><input name="link" type="button" value="Cookpadを開く" onclick="window.location = 'http://cookpad.com/'; return false;"/></li>
+</ul>

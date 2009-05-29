@@ -1,0 +1,35 @@
+<ul class="pageitem">
+  <li class="textbox">
+    <p style="float:left;">
+      <img width=120 src="<%= @main_photo %>" />
+    </p>
+    <div style="margin-left: 124px;">
+      <p style="margin: 20px 0;"><%= @description %></p>
+      <span class="graytitle">材料</span>
+      <ul>
+        <% @materials.each do |m| %>
+        <li><%= m.css('td[1] span')[0].content %>　<%= m.css('td[2]')[0].content %></li>
+        <% end %>
+      </ul>
+    </div>
+  </li>
+</ul>
+<span class="graytitle">手順</span>
+<ul class="pageitem">
+  <% @steps.each do |step| %>
+  <li class="textbox">
+    <% photo = step.css('div[1] img') ; if photo.length > 0 %>
+    <p style="float:left;">
+      <a href="<%= photo[0]['src'] %>"><img width=60 src="<%= photo[0]['src'] %>" /></a>
+    </p>
+    <% end %>
+    <div style="margin-left: 65px;">
+      <p><%= step.css('p')[0].content %></p>
+    </div>
+  </li>
+  <% end %>
+</ul>
+
+<ul class="pageitem"> 
+  <li class="form"><input name="link" type="button" value="Cookpadのレシピページを開く" onclick="window.location = '<%= @url %>'; return false;"/></li>
+</ul>

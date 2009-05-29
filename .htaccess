@@ -1,0 +1,9 @@
+DirectoryIndex start.rb
+
+AddHandler cgi-script .rb
+
+RewriteEngine On
+RewriteBase /icookpad
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*) start.rb/$1 [L]

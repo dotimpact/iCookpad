@@ -1,0 +1,8 @@
+  <li class="title"><%= @date %></li>
+  <% @recipes.each do |recipe| %>
+  <li><a href="/icookpad/recipe/<%= recipe['href'].gsub(/.*\/([^\/]+$)/, "\\1")%>"><span class="name"><%= recipe.content %></span><span class="arrow"></span></a></li>
+  <% end %>
+  <% if @next && @next['href'] =~ /hot\?date=/ %>
+  <li id="next" style="text-align: center"><a class="noeffect" href="javascript:void(0);" onclick="loadNext('recipe/hot', '<%= @next['href'].gsub(/.*date=(\d+)&?.*/, "\\1") %>'); return false;" >前の日を読み込む</a></li>
+  <% end %>
+</ul>
