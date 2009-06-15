@@ -1,6 +1,4 @@
-#!/home/realtimemachine/local/ruby/bin/ruby 
-$LOAD_PATH.unshift '/home/realtimemachine/local/ruby/lib'
-ENV['GEM_HOME'] = '/home/realtimemachine/local/lib/ruby/gem'
+#!/usr/local/bin/ruby 
 
 require 'rubygems'
 require 'sinatra'
@@ -10,10 +8,9 @@ require 'erb'
 require 'nokogiri'
 require 'open-uri'
 
-set :run, false # HTTPサーバを立ち上げないならfalse
-set :environment, :cgi
+set :public, (File.dirname(__FILE__) + "/..")
 
-get '' do
+get '/?' do
   doc = Nokogiri::HTML(open('http://cookpad.com/'))
   @keywords = doc.css('div#trend-keyword table.hourly tr td[3] a')
   @wadai_recipe = doc.css('div#wadai-recipe-inner ul li span.recipe-title a')
@@ -66,12 +63,13 @@ get '/recipe/:id' do
   @url = "http://cookpad.com/recipe/#{params[:id]}"
   doc = Nokogiri::HTML(open(@url))
   @main_photo = doc.css('div#main-photo img')[0]['src']
-  @description = doc.css('div#description')[0].content
+  @description = doc.css('div#description')[0].child.text
+  @user = doc.css('div#description div.right a')[0]
   @materials = doc.css('table#ingredients-list tr')
   @steps = doc.css('div#steps div dl dd')
+  @point = doc.css('div#recipe div.cont-wrapper div.font14')
+  @tukurepo_count = doc.css('div.tsukurepo-count')[0].content
   @title = doc.css('h1.recipe-title')[0].content
   @leftnav = '<a href="/icookpad/"><img alt="home" src="/icookpad/images/home.png" /></a>'
   erb :recipe
 end
-
-Rack::Handler::CGI.run Sinatra::Application

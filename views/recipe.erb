@@ -4,7 +4,10 @@
       <img width=120 src="<%= @main_photo %>" />
     </p>
     <div style="margin-left: 124px;">
-      <p style="margin: 20px 0;"><%= @description %></p>
+      <p style="margin: 20px 0;"><%= @description %>
+       by <a class="noeffect" href="http://cookpad.com<%= @user['href'] %>"><%= @user.text %></a>
+      </p>
+      <p style="margin: 20px 0;color:rgb(76, 76, 76);">つくれぽ：<%= @tukurepo_count %></p>
       <span class="graytitle">材料</span>
       <ul>
         <% @materials.each do |m| %>
@@ -16,18 +19,27 @@
 </ul>
 <span class="graytitle">手順</span>
 <ul class="pageitem">
-  <% @steps.each do |step| %>
+  <% @steps.each_with_index do |step, i| %>
+  <% photo = step.css('div[1] img') ; next unless step.css('p')[0].content.length > 0 || photo.length > 0 %>
   <li class="textbox">
-    <% photo = step.css('div[1] img') ; if photo.length > 0 %>
+    <% if photo.length > 0 %>
     <p style="float:left;">
       <a href="<%= photo[0]['src'] %>"><img width=60 src="<%= photo[0]['src'] %>" /></a>
     </p>
     <% end %>
     <div style="margin-left: 65px;">
+      <p><span style="font-weight: bold;"><%= i+1 %></span></p>
       <p><%= step.css('p')[0].content %></p>
     </div>
   </li>
   <% end %>
+</ul>
+
+<span class="graytitle">コツ・ポイント</span>
+<ul class="pageitem">
+  <li class="textbox">
+  <%= @point %>
+  </li>
 </ul>
 
 <ul class="pageitem"> 
